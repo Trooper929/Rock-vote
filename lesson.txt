@@ -1,0 +1,60 @@
+MongoDB Update Operators: MongoDB provides various update operators that allow you to modify documents in a collection. These operators are used with the update and findOneAndUpdate methods in MongoDB.
+
+
+$inc: Increments a numeric field's value by a specified amount. (Positive or Negative value)
+
+
+$addToSet: Adds elements to an array field only if they are not already present.
+
+
+$pull: Removes all array elements that match a specified query.
+
+
+$push: Adds an element to an array field (allows duplicates, unlike $addToSet).
+
+
+$set: Updates the value of a specific field.
+  Example: { $set: { title: 'New Title' } }
+
+
+$unset: Removes a field from a document.
+  Example: { $unset: { fieldName: '' } }
+
+
+---
+
+findByIdAndUpdate syntax:
+  await Model.findByIdAndUpdate(
+    id,
+    { $inc: { votes: 1 }, $addToSet: { votedBy: userId } },
+    { new: true }   // returns the updated document instead of the old one
+  )
+
+  { new: true } — without this, Mongoose returns the document BEFORE the update.
+
+
+---
+
+JWT Decoding (from token to user data):
+  const payload = JSON.parse(atob(token.split('.')[1]))
+  payload.id       // user's id
+  payload.username // user's username
+
+  - JWT has 3 parts: header.payload.signature
+  - The payload is Base64 encoded (not encrypted)
+  - atob() decodes Base64 back to plain text
+
+
+---
+
+Conditional Rendering in React:
+  {condition && <Component />}          // show if true
+  {condition ? <A /> : <B />}           // show A or B
+  {a ? <A /> : b ? <B /> : <C />}      // chain of conditions
+
+
+---
+
+Protected Routes (Express middleware):
+  router.use(requireAuth)   // runs requireAuth on ALL routes below it
+  req.auth.id               // user id attached by the middleware after token verification
