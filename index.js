@@ -1,6 +1,7 @@
 require('dotenv').config()
 const express = require('express')
 const mongoose = require('mongoose')
+const path = require('path')
 
 const userRoutes = require('./routes/userRoutes')
 const issueRoutes = require('./routes/issueRoutes')
@@ -14,6 +15,14 @@ app.use(express.json())
 app.use('/api/users', userRoutes)
 app.use('/api/issues', issueRoutes)
 app.use('/api/comments', commentRoutes)
+
+// Serve React frontend in production
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static(path.join(__dirname, 'Rock/dist')))
+  app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, 'Rock/dist/index.html'))
+  })
+}
 
 // Error handler
 app.use((err, req, res, next) => {
